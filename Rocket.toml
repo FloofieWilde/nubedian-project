@@ -1,0 +1,13 @@
+[global]
+port = 8000
+
+[global.databases.nubedian]
+url = "mysql://root:root@localhost/nubedian"
+
+[dependencies.rocket_db_pools]
+version = "0.1.0-rc.2"
+features = ["sqlx_mysql"]
+
+[dependencies.rocket_dyn_templates]
+version = "0.1.0-rc.2"
+features = ["handlebars", "tera"]
