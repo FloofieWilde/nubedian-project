@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 75%;
+            margin: auto;
+            margin-top: -15px;
+        }
+
+        thead tr{
+            background-color: #9607ce !important;
+            color : white;
+        }
+
+        td, th {
+            border: 1px solid #252d30;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #d49cf5b6;
+        }
+        tr:nth-child(odd) {
+            background-color: #dfb1ecb6;
+        }
+
+        thead{
+            font-size: 130%;
+        }
+        .button{
+            border: solid 1px #9607ce;
+            background-color: #9607ce;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.5em;
+            text-decoration: none;
+            color: white;
+            margin-left: 210px;
+        }
+    </style>
+    <head>
+            <title>Cpu List</title>
+    </head>
+    <body>
+        <div style="margin-top: 60px;"></div>
+        <a class="button" href="../">Retour</a>
+        <table>
+            <tr>
+                <th rowspan="12" style="text-align:center"><img src="https://www.rosssolar.com/wp-content/uploads/2017/08/image-placeholder.jpg" style="width:300px"></th>
+            </tr>
+            {{#each this}}
+            <tr>
+                <th>Name : {{Name}}</th>
+            </tr>
+            <tr>
+                <th>ID : {{ID}}</th>
+            </tr>
+            <tr>
+                <th>Price : {{Price}}</th>
+            </tr>
+            <tr>
+                <th>CPU Mark : {{CPUMark}}</th>
+            </tr>
+            <tr>
+                <th>Platform : {{Platform}}</th>
+            </tr>
+            <tr>
+                <th>Socket : {{Socket}}</th>
+            </tr>
+            <tr>
+                <th>Clockspeed : {{Clockspeed}}</th>
+            </tr>
+            <tr>
+                <th>Turbospeed : {{Turbospeed}}</th>
+            </tr>
+            <tr>
+                <th>Threads : {{Threads}}</th>
+            </tr>
+            <tr>
+                <th>TDP : {{TDP}}</th>
+            </tr>
+            <tr>
+                <th>Release Date : {{ReleaseDate}}</th>
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>
