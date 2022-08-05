@@ -4,69 +4,16 @@
 
 use rocket::response::content::{RawJson, self};
 use rocket_dyn_templates::Template;
-use std::fmt::Debug;
-use crate::rocket::futures::FutureExt;
 
-use rocket::Request;
 use serde::Serialize;
 use crate::sqlx::mysql::MySqlRow;
 
 use rocket_db_pools::{sqlx, Database, Connection};
 use rocket_db_pools::sqlx::Row;
 
-// let mut rq = pool.prepare("SELECT * FROM cpu_list").unwrap();
-
-//#[get("/")]
-/*async fn cpu_list(mut db: Connection<Nubedian>) -> Option<RawJson<String>> {
-  let var = sqlx::query("SELECT * FROM cpu_list")
-  .map(|r : _| RawJson(CpuList { ID: r.ID, Price: r.Price, CPUMark: r.CPUMark, Name: r.Name, Platform: r.Platform, Socket: r.Socket, Clockspeed: r.Clockspeed, Turbospeed: r.Turbospeed, Cores: r.Cores, Threads: r.Threads, TDP: r.TDP, ReleaseDate: r.ReleaseDate,}))
-  .await
-  .ok();
-
-    return var;
-}*/
-
-#[get("/temp/<name>/<last>")]
-fn index(name : String, last : String) -> content::RawHtml<Template> {
-  #[derive(Serialize)]
-  struct Context {
-    first_name: String,
-    last_name: String
-  }
-
-  let context = Context {
-    first_name: name,
-    last_name: last
-  };
-
-  rocket::response::content::RawHtml(Template::render("home", context))
-}
-
-#[get("/post")]
-async fn postt(mut db: Connection<Nubedian>) -> String {
-  sqlx::query("INSERT into test(Oui) value ('Test')")
-    .execute(&mut *db)
-    .await;
-
-return String::from("true");
-}
-
-#[get("/post/<test>")]
-async fn posttest(mut db: Connection<Nubedian>, test : String) -> RawJson<String> {
-  let rq = String::from("INSERT into test(Oui) values (\'".to_owned()+&test+"\')");
-
-  sqlx::query(&rq)
-  .execute(&mut *db)
-  .await;
-
-  let json = "{
-    \"Var\": \"".to_owned()+&test+&"\",
-    \"Q\": \"".to_owned()+&rq+"\",
-    \"Status\": \"Posted\"
-  }";
-  RawJson(json)
-}
-
+/// The function you're interressed into : it shows the CPU List
+/// it uses templating (handlebars, file : ./templates/cpu_list)
+/// URL : http://127.0.0.1:8000/
 #[get("/")]
 async fn list(mut db: Connection<Nubedian>) -> content::RawHtml<Template> {
     let q = sqlx::query("SELECT * FROM cpu_list");
@@ -90,31 +37,30 @@ async fn list(mut db: Connection<Nubedian>) -> content::RawHtml<Template> {
     .await
     .unwrap();
 
-    //info!("{:?}",  result[0]);
-
-    //return result[0].CPUMark.expect("REASON").to_string();
-    //return result[0].Name.as_ref().expect("REASON").to_string();
-
     rocket::response::content::RawHtml(Template::render("cpu_list", result))
     
 }
 
-#[get("/world")]
-fn world() -> &'static str {
-    "Hello, world!"
+/// A function that will insert something in the table test
+/// URL : http://127.0.0.1:8000/post/{the thing to insert}
+#[get("/post/<test>")]
+async fn posttest(mut db: Connection<Nubedian>, test : String) -> RawJson<String> {
+  let rq = String::from("INSERT into test(Oui) values (\'".to_owned()+&test+"\')");
+
+  sqlx::query(&rq)
+  .execute(&mut *db)
+  .await;
+
+  let json = "{
+    \"Var\": \"".to_owned()+&test+&"\",
+    \"Q\": \"".to_owned()+&rq+"\",
+    \"Status\": \"Posted\"
+  }";
+  RawJson(json)
 }
 
-/*#[get("/test")]
-async fn test(mut db: Connection<Nubedian>) -> RawJson<&'static str> {
-  let ids = sqlx::query("SELECT * FROM cpu_list")
-      .fetch(&mut *db)
-      .map(|row: PgRow|)
-      .try_collect::<Vec<_>>()
-      .await?;
-
-  Ok(RawJson(ids))
-}*/
-
+/// A random JSON test
+/// URL : http://127.0.0.1:8000/hello
 #[get("/hello")]
 fn testjson() -> RawJson<&'static str> {
   RawJson("{
@@ -137,41 +83,20 @@ fn testjson() -> RawJson<&'static str> {
   }")
 }
 
-#[get("/hello/<name>")]
-fn hello(name: String) -> RawJson<String> {
-  let json = "{
-    \"firstName\": \"".to_owned()+&name+"\",
-    \"lastName\": \"Jackon\",
-    \"gender\": \"man\",
-    \"age\": 24,
-    \"address\": {
-      \"streetAddress\": \"126\",
-      \"city\": \"San Jone\",
-      \"state\": \"CA\",
-      \"postalCode\": \"394221\"
-    },
-    \"phoneNumbers\": [
-      {
-        \"type\": \"home\",
-        \"number\": \"7383627627\"
-      }
-    ]
-  }";
-  RawJson(json)
-}
-
 #[derive(Database)]
 #[database("nubedian")]
 struct Nubedian(sqlx::MySqlPool);
 
+/// The main Rocket function
 #[launch]
 fn rocket() -> _ {
    rocket::build()
     .attach(Template::fairing())
     .attach(Nubedian::init())
-    .mount("/", routes![hello, testjson, world, posttest, postt, index,list])
+    .mount("/", routes![testjson, posttest,list])
 }
 
+/// I intentionnaly didn't respected snake case for the variables to match names with the database
 #[derive(Serialize)]
 struct CpuList{
   ID: i32,

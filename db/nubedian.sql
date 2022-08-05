@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.10
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : db5006051610.hosting-data.io
--- Généré le : Dim 31 juil. 2022 à 14:54
--- Version du serveur : 5.7.38-log
--- Version de PHP : 7.0.33-0+deb9u12
+-- Hôte : 127.0.0.1:3306
+-- Généré le : ven. 05 août 2022 à 21:59
+-- Version du serveur : 8.0.30
+-- Version de PHP : 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,35 +18,37 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `dbs5068154`
+-- Base de données : `nubedian`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `CPU_list`
+-- Structure de la table `cpu_list`
 --
 
-CREATE TABLE `CPU_list` (
-  `ID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `cpu_list`;
+CREATE TABLE IF NOT EXISTS `cpu_list` (
+  `ID` int NOT NULL,
   `Price` varchar(10) DEFAULT NULL,
-  `CPUMark` int(11) NOT NULL,
+  `CPUMark` int NOT NULL,
   `Name` varchar(43) NOT NULL,
   `Platform` varchar(7) DEFAULT NULL,
   `Socket` varchar(16) DEFAULT NULL,
   `Clockspeed` varchar(8) DEFAULT NULL,
   `Turbospeed` varchar(8) DEFAULT NULL,
-  `Cores` int(11) NOT NULL,
-  `Threads` int(11) NOT NULL,
+  `Cores` int NOT NULL,
+  `Threads` int NOT NULL,
   `TDP` varchar(7) DEFAULT NULL,
-  `ReleaseDate` varchar(7) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `ReleaseDate` varchar(7) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
--- Déchargement des données de la table `CPU_list`
+-- Déchargement des données de la table `cpu_list`
 --
 
-INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
+INSERT INTO `cpu_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
 (1, NULL, 88673, 'AMD Ryzen Threadripper PRO 3995WX', 'Desktop', 'sTRX4', '2.7 GHz', '4.2 GHz', 64, 128, '280 W', 'Q2 2020'),
 (2, '$3,599.99', 79930, 'AMD Ryzen Threadripper 3990X', 'Desktop', 'sTRX4', '2.9 GHz', '4.3 GHz', 64, 128, '280 W', 'Q1 2020'),
 (3, '$4,088.00', 71362, 'AMD EPYC 7702', 'Server', 'SP3', '2.0 GHz', '3.4 GHz', 64, 128, '200 W', 'Q2 2020'),
@@ -448,7 +449,7 @@ INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, 
 (398, NULL, 9643, 'AMD Ryzen 5 PRO 3350GE', 'Desktop', NULL, '3.3 GHz', '3.9 GHz', 4, 4, '35 W', 'Q2 2020'),
 (399, '$411.18', 9597, 'Intel Xeon E-2144G @ 3.60GHz', 'Server', 'FCLGA1151-2', '3.6 GHz', '4.5 GHz', 4, 8, '71 W', 'Q1 2019'),
 (400, '$159.73', 9594, 'Intel Core i5-9400 @ 2.90GHz', 'Desktop', 'FCLGA1151-2', '2.9 GHz', '4.1 GHz', 6, 6, '65 W', 'Q1 2019');
-INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
+INSERT INTO `cpu_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
 (401, '$139.99', 9592, 'Intel Core i5-9400F @ 2.90GHz', NULL, 'FCLGA1151-2', '2.9 GHz', '4.1 GHz', 6, 6, '65 W', 'Q1 2019'),
 (402, NULL, 9582, 'AMD Ryzen 5 PRO 3350G', 'Desktop', 'AM4', '3.6 GHz', '4.0 GHz', 4, 8, '65 W3', 'Q2 2020'),
 (403, '$78.84', 9579, 'Intel Xeon E5-4627 v2 @ 3.30GHz', 'Server', 'FCLGA2011', '3.3 GHz', '3.6 GHz', 8, 8, '130 W', 'Q2 2015'),
@@ -858,7 +859,7 @@ INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, 
 (807, NULL, 5348, 'Intel Core i7-4750HQ @ 2.00GHz', 'Laptop', 'FCBGA1364', '2.0 GHz', '3.2 GHz', 4, 8, '47 W', 'Q2 2013'),
 (808, '$276.00', 5335, 'Intel Core i5-4670R @ 3.00GHz', 'Desktop', 'FCBGA1364', '3.0 GHz', '3.7 GHz', 4, 4, '65 W', 'Q2 2018'),
 (809, NULL, 5333, 'Intel Xeon E3-1268L v3 @ 2.30GHz', 'Server', 'LGA1150', '2.3 GHz', '3.3 GHz', 4, 8, '45 W', 'Q2 2014');
-INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
+INSERT INTO `cpu_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
 (810, '$179.98', 5332, 'Intel Core i7-2600 @ 3.40GHz', 'Desktop', 'LGA1155', '3.4 GHz', '3.8 GHz', 4, 8, '95 W', 'Q4 2010'),
 (811, NULL, 5331, 'Intel Core i5-1030NG7 @ 1.10GHz', 'Laptop', 'BGA1526', '1.1 GHz', '3.5 GHz', 4, 8, '10 W', 'Q2 2020'),
 (812, '$192.01', 5330, 'AMD FX-8320 Eight-Core', 'Desktop', 'AM3+', '3.5 GHz', '4.0 GHz', 8, 0, '125 W', 'Q4 2012'),
@@ -1282,7 +1283,7 @@ INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, 
 (1230, '$99.99', 2921, 'Intel Core i7-930 @ 2.80GHz', 'Desktop', 'LGA1366', '2.8 GHz', '3.1 GHz', 4, 8, '130 W', 'Q1 2010'),
 (1231, '$429.95', 2921, 'Intel Core i7-3540M @ 3.00GHz', 'Laptop', 'rPGA988B', '3.0 GHz', '3.7 GHz', 2, 4, '35 W', 'Q1 2013'),
 (1232, '$189.00', 2917, 'AMD Phenom II X6 1035T', 'Desktop', 'AM3', '2.6 GHz', '3.1 GHz', 6, 6, '95 W', 'Q2 2010');
-INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
+INSERT INTO `cpu_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
 (1233, '$108.02', 2917, 'AMD Phenom II X6 1045T', 'Desktop', 'AM3', '2.7 GHz', '3.2 GHz', 6, 6, '95 W', 'Q2 2010'),
 (1234, '$84.04', 2912, 'AMD FX-4300 Quad-Core', 'Desktop', 'AM3+', '3.8 GHz', '4.0 GHz', 4, 0, '95 W', 'Q4 2012'),
 (1235, NULL, 2908, 'Intel Core i7-5550U @ 2.00GHz', 'Laptop', 'FCBGA1168', '2.0 GHz', '3.0 GHz', 2, 4, '15 W', 'Q2 2016'),
@@ -1718,7 +1719,7 @@ INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, 
 (1665, '$98.68', 1771, 'AMD Athlon II X4 605e', 'Desktop', 'AM3', '2.3 GHz', NULL, 4, 4, '45 W', 'Q4 2009'),
 (1666, '$64.95', 1770, 'AMD Athlon X4 620', NULL, NULL, '2.6 GHz', NULL, 4, 4, '95 W', 'Q4 2009'),
 (1667, '$136.26', 1769, 'Intel Core2 Quad Q8200 @ 2.33GHz', 'Desktop', 'LGA775', '2.3 GHz', NULL, 4, 4, '95 W', 'Q4 2008');
-INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
+INSERT INTO `cpu_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
 (1668, '$109.95', 1769, 'AMD A8-3800 APU', 'Desktop', 'FM1', '2.4 GHz', '2.7 GHz', 4, 4, '65 W', 'Q2 2011'),
 (1669, NULL, 1768, 'AMD Phenom II N830 3+1', 'Laptop', 'S1', '2.1 GHz', NULL, 4, 4, '35 W', 'Q2 2014'),
 (1670, '$189.95', 1767, 'Intel Core2 Quad Q6600 @ 2.40GHz', 'Desktop', 'LGA775', '2.4 GHz', NULL, 4, 4, '105 W', 'Q4 2008'),
@@ -2163,7 +2164,7 @@ INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, 
 (2109, NULL, 1037, 'Intel Pentium 3805U @ 1.90GHz', 'Laptop', 'FCBGA1168', '1.9 GHz', NULL, 2, 2, '15 W', 'Q1 2015'),
 (2110, '$96.41', 1036, 'AMD Opteron 2218', 'Server', 'F (1207)', '2.6 GHz', NULL, 2, 2, '95 W', 'Q1 2009'),
 (2111, NULL, 1036, 'AMD Opteron 1220', 'Server', 'AM2', '2.8 GHz', NULL, 2, 2, '103 W', 'Q2 2009');
-INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
+INSERT INTO `cpu_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
 (2112, '$108.02', 1034, 'Intel Core2 Duo T9500 @ 2.60GHz', 'Laptop', 'BGA479', '2.6 GHz', NULL, 2, 2, '35 W', 'Q1 2009'),
 (2113, NULL, 1028, 'Intel Celeron U1900 @ 1.99GHz', NULL, NULL, '2.0 GHz', NULL, 4, 4, NULL, 'Q2 2015'),
 (2114, NULL, 1026, 'Intel Core i7-640UM @ 1.20GHz', 'Laptop', 'BGA1288', '2.3 GHz', '2.3 GHz', 2, 4, '18 W', 'Q2 2010'),
@@ -2608,7 +2609,7 @@ INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, 
 (2553, NULL, 481, 'Intel Atom D2700 @ 2.13GHz', 'Desktop', 'BGA559', '2.1 GHz', NULL, 2, 4, '10 W', 'Q4 2011'),
 (2554, NULL, 478, 'Intel Xeon 3.20GHz', 'Server', 'PPGA604', '3.2 GHz', NULL, 1, 2, '103 W', 'Q1 2009'),
 (2555, NULL, 478, 'Intel Core2 Duo L7100 @ 1.20GHz', 'Laptop', 'BGA956', '1.2 GHz', NULL, 2, 2, '-1 W', 'Q4 2008');
-INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
+INSERT INTO `cpu_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, `Clockspeed`, `Turbospeed`, `Cores`, `Threads`, `TDP`, `ReleaseDate`) VALUES
 (2556, '$89.95', 477, 'Intel Core2 Duo T5250 @ 1.50GHz', 'Laptop', 'PGA478', '1.5 GHz', NULL, 2, 2, '35 W', 'Q4 2008'),
 (2557, NULL, 476, 'Intel Core2 Duo U7300 @ 1.30GHz', 'Laptop', 'BGA956', '1.3 GHz', NULL, 2, 2, '10 W', 'Q4 2009'),
 (2558, NULL, 476, 'AMD Athlon Neo X2 Dual Core L325', NULL, NULL, '1.5 GHz', NULL, 2, 2, '18 W', 'Q1 2010'),
@@ -3030,15 +3031,27 @@ INSERT INTO `CPU_list` (`ID`, `Price`, `CPUMark`, `Name`, `Platform`, `Socket`, 
 (2974, NULL, 80, 'VIA Eden 1000MHz', 'Laptop', 'NanoBGA2', '1.0 GHz', NULL, 1, 1, '5 W', 'Q4 2017'),
 (2975, NULL, 77, 'Intel Pentium 4 1300MHz', 'Desktop', 'PGA423', '1.3 GHz', NULL, 1, 1, '51.6 W', 'Q1 2009');
 
---
--- Index pour les tables déchargées
---
+-- --------------------------------------------------------
 
 --
--- Index pour la table `CPU_list`
+-- Structure de la table `test`
 --
-ALTER TABLE `CPU_list`
-  ADD PRIMARY KEY (`ID`);
+
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE IF NOT EXISTS `test` (
+  `Oui` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `test`
+--
+
+INSERT INTO `test` (`Oui`) VALUES
+('Test'),
+('Maxime'),
+('Max'),
+('Max'),
+('Oui');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
