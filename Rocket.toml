@@ -2,7 +2,7 @@
 port = 8000
 
 [global.databases.nubedian]
-url = "mysql://root:root@localhost/nubedian"
+url = "mysql://root:root@localhost:3306/nubedian"
 
 [dependencies.rocket_db_pools]
 version = "0.1.0-rc.2"

@@ -20,10 +20,27 @@ use rocket_db_pools::sqlx::Row;
 
 #[get("/")]
 async fn cpu_list(mut db: Connection<Nubedian>) -> Option<String> {
-  sqlx::query("SELECT * FROM cpu_list")
+  let var = sqlx::query("SELECT * FROM cpu_list")
       .fetch_one(&mut *db).await
       .and_then(|r| Ok(r.try_get(0)?))
-      .ok()
+      .ok();
+
+      return var;
+}
+
+#[get("/post/<test>")]
+async fn posttest(mut db: Connection<Nubedian>, test : String) -> RawJson<String> {
+  let rq = String::from("INSERT into test(Oui) values (\'".to_owned()+&test+"\')");
+
+  sqlx::query(&rq)
+    .fetch(&mut *db);
+
+  let json = "{
+    \"Var\": \"".to_owned()+&test+&"\",
+    \"Q\": \"".to_owned()+&rq+"\",
+    \"Status\": \"Posted\"
+  }";
+  RawJson(json)
 }
 
 /*#[get("/")]
@@ -107,7 +124,7 @@ struct Nubedian(sqlx::MySqlPool);
 fn rocket() -> _ {
    rocket::build()
     .attach(Nubedian::init())
-    .mount("/", routes![hello, cpu_list, testjson,world])
+    .mount("/", routes![hello, cpu_list, testjson, world, posttest])
 }
 
 struct CpuList{
