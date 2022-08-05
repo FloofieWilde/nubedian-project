@@ -2,30 +2,53 @@
 #[macro_use] extern crate rocket;
 //#[macro_use] extern crate sqlx;
 
-//use rocket::response::content::Json;
-use rocket::response::content::RawJson;
-use rocket_contrib::templates::Template;
+use rocket::response::content::{RawJson, self};
+use rocket_dyn_templates::Template;
 use std::fmt::Debug;
+use crate::rocket::futures::FutureExt;
 
-//use rocket_db_pools::{Database, Connection};
-//use rocket_db_pools::sqlx::{self, Row};
+use rocket::Request;
+use serde::Serialize;
+use crate::sqlx::mysql::MySqlRow;
+
 use rocket_db_pools::{sqlx, Database, Connection};
 use rocket_db_pools::sqlx::Row;
 
-//use sqlx::mysql::MySqlPoolOptions;
-//use sqlx::MySqlPool;
-//use sqlx::query;
-
 // let mut rq = pool.prepare("SELECT * FROM cpu_list").unwrap();
 
-#[get("/")]
-async fn cpu_list(mut db: Connection<Nubedian>) -> Option<String> {
+//#[get("/")]
+/*async fn cpu_list(mut db: Connection<Nubedian>) -> Option<RawJson<String>> {
   let var = sqlx::query("SELECT * FROM cpu_list")
-      .fetch_one(&mut *db).await
-      .and_then(|r| Ok(r.try_get(0)?))
-      .ok();
+  .map(|r : _| RawJson(CpuList { ID: r.ID, Price: r.Price, CPUMark: r.CPUMark, Name: r.Name, Platform: r.Platform, Socket: r.Socket, Clockspeed: r.Clockspeed, Turbospeed: r.Turbospeed, Cores: r.Cores, Threads: r.Threads, TDP: r.TDP, ReleaseDate: r.ReleaseDate,}))
+  .await
+  .ok();
 
-      return var;
+    return var;
+}*/
+
+#[get("/temp/<name>/<last>")]
+fn index(name : String, last : String) -> content::RawHtml<Template> {
+  #[derive(Serialize)]
+  struct Context {
+    first_name: String,
+    last_name: String
+  }
+
+  let context = Context {
+    first_name: name,
+    last_name: last
+  };
+
+  rocket::response::content::RawHtml(Template::render("home", context))
+}
+
+#[get("/post")]
+async fn postt(mut db: Connection<Nubedian>) -> String {
+  sqlx::query("INSERT into test(Oui) value ('Test')")
+    .execute(&mut *db)
+    .await;
+
+return String::from("true");
 }
 
 #[get("/post/<test>")]
@@ -33,7 +56,8 @@ async fn posttest(mut db: Connection<Nubedian>, test : String) -> RawJson<String
   let rq = String::from("INSERT into test(Oui) values (\'".to_owned()+&test+"\')");
 
   sqlx::query(&rq)
-    .fetch(&mut *db);
+  .execute(&mut *db)
+  .await;
 
   let json = "{
     \"Var\": \"".to_owned()+&test+&"\",
@@ -43,17 +67,37 @@ async fn posttest(mut db: Connection<Nubedian>, test : String) -> RawJson<String
   RawJson(json)
 }
 
-/*#[get("/")]
-async fn list(mut db: Connection<Db>) -> Result<Json<Vec<i64>>> {
-    let ids = sqlx::query!("SELECT id FROM posts")
-        .fetch(&mut *db)
-        .map_ok(|record| record.id)
-        .try_collect::<Vec<_>>()
-        .await?;
+#[get("/")]
+async fn list(mut db: Connection<Nubedian>) -> content::RawHtml<Template> {
+    let q = sqlx::query("SELECT * FROM cpu_list");
 
-    Ok(Json(ids))
-}*/
+    let result: Vec<CpuList> = q
+    .map(|r: MySqlRow| CpuList{
+      ID: r.get("ID"), 
+      Price: r.get("Price"), 
+      CPUMark: r.get("CPUMark"), 
+      Name: r.get("Name"), 
+      Platform: r.get("Platform"), 
+      Socket: r.get("Socket"), 
+      Clockspeed: r.get("Clockspeed"), 
+      Turbospeed: r.get("Turbospeed"), 
+      Cores: r.get("Cores"), 
+      Threads: r.get("Threads"), 
+      TDP: r.get("TDP"), 
+      ReleaseDate: r.get("ReleaseDate")
+    })
+    .fetch_all(&mut *db)
+    .await
+    .unwrap();
 
+    //info!("{:?}",  result[0]);
+
+    //return result[0].CPUMark.expect("REASON").to_string();
+    //return result[0].Name.as_ref().expect("REASON").to_string();
+
+    rocket::response::content::RawHtml(Template::render("cpu_list", result))
+    
+}
 
 #[get("/world")]
 fn world() -> &'static str {
@@ -123,21 +167,23 @@ struct Nubedian(sqlx::MySqlPool);
 #[launch]
 fn rocket() -> _ {
    rocket::build()
+    .attach(Template::fairing())
     .attach(Nubedian::init())
-    .mount("/", routes![hello, cpu_list, testjson, world, posttest])
+    .mount("/", routes![hello, testjson, world, posttest, postt, index,list])
 }
 
+#[derive(Serialize)]
 struct CpuList{
-  ID: i8,
-  Price: String,
-  CPUMark: i8,
-  Name: String,
-  Platform: String,
-  Socket: String,
-  Clockspeed: String,
-  Turbospeed: String,
-  Cores: i8,
-  Threads: i8,
-  TDP: String,
-  ReleaseDate: String,
+  ID: i32,
+  Price: Option<String>,
+  CPUMark: Option<i32>,
+  Name: Option<String>,
+  Platform: Option<String>,
+  Socket: Option<String>,
+  Clockspeed: Option<String>,
+  Turbospeed: Option<String>,
+  Cores: Option<i32>,
+  Threads: Option<i32>,
+  TDP: Option<String>,
+  ReleaseDate: Option<String>,
 }

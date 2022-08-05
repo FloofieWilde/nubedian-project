@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        thead tr{
+            background-color: #9607ce !important;
+            color : white;
+        }
+
+        td, th {
+            border: 1px solid #252d30;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #d49cf5b6;
+        }
+        tr:nth-child(odd) {
+            background-color: #dfb1ecb6;
+        }
+
+
+        thead{
+            font-size: 130%;
+        }
+    </style>
+    <head>
+            <title>Cpu List</title>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Price</th>
+                    <th>CPU Mark</th>
+                    <th>Name</th>
+                    <th>Platform</th>
+                    <th>Socket</th>
+                    <th>Clockspeed</th>
+                    <th>Turbospeed</th>
+                    <th>Threads</th>
+                    <th>TDP</th>
+                    <th>Release Date</th>
+                </tr>
+            </thead>
+            {{#each this}}
+            <tr>
+                <th>{{ID}}</th>
+                <th>{{Price}}</th>
+                <th>{{CPUMark}}</th>
+                <th>{{Name}}</th>
+                <th>{{Platform}}</th>
+                <th>{{Socket}}</th>
+                <th>{{Clockspeed}}</th>
+                <th>{{Turbospeed}}</th>
+                <th>{{Threads}}</th>
+                <th>{{TDP}}</th>
+                <th>{{ReleaseDate}}</th>
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>
