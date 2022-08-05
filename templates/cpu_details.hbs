@@ -43,8 +43,9 @@
             margin-left: 210px;
         }
     </style>
+    {{#each this}}
     <head>
-            <title>Cpu List</title>
+            <title>{{Name}}</title>
     </head>
     <body>
         <div style="margin-top: 60px;"></div>
@@ -53,7 +54,7 @@
             <tr>
                 <th rowspan="12" style="text-align:center"><img src="https://www.rosssolar.com/wp-content/uploads/2017/08/image-placeholder.jpg" style="width:300px"></th>
             </tr>
-            {{#each this}}
+            
             <tr>
                 <th>Name : {{Name}}</th>
             </tr>
